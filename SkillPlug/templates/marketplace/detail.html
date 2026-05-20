@@ -1,0 +1,53 @@
+% extends 'base.html' %}
+{% block title %}{{ freelancer.full_name }}{% endblock %}
+{% block content %}
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div class="p-6 md:p-8">
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden bg-gray-200 shrink-0">
+                {% if freelancer.profile_image %}<img src="{{ freelancer.profile_image.url }}" class="w-full h-full object-cover">{% else %}<div class="w-full h-full flex items-center justify-center text-4xl font-bold text-gray-500">{{ freelancer.full_name|slice:":1" }}</div>{% endif %}
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                    <h1 class="text-3xl font-bold">{{ freelancer.full_name }}</h1>
+                    {% if freelancer.verified %}<span class="text-ng-600 text-xl">✓</span>{% endif %}
+                </div>
+                <p class="text-gray-500 mb-4">{{ freelancer.department }} • {{ freelancer.school }}</p>
+                <p class="text-gray-700 dark:text-gray-300 mb-6">{{ freelancer.bio|default:"No bio provided." }}</p>
+                
+                <div class="flex flex-wrap gap-2 mb-6">
+                    {% for s in freelancer.profile.skills.all %}
+                        <span class="px-3 py-1 bg-green-50 text-ng-700 dark:bg-green-900/30 dark:text-emerald-300 rounded-full text-sm font-medium">{{ s.name }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="flex gap-4">
+                    {% if freelancer.whatsapp %}
+                        <a href="https://wa.me/{{ freelancer.whatsapp|replace:'+':'' }}" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.13.67 4.1 1.8 5.7L2 22l4.5-1.7c1.53.95 3.35 1.5 5.3 1.5 5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.73 0-3.35-.5-4.73-1.36l-.34-.21-3 .71.8-2.93-.23-.37C3.72 14.27 3 13.21 3 12c0-4.96 4.04-9 9-9s9 4.04 9 9-4.04 9-9 9z"/></svg>
+                            Contact on WhatsApp
+                        </a>
+                    {% endif %}
+                    <span class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 font-medium">Status: {{ freelancer.get_availability_status_display }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if portfolio %}
+    <div class="border-t border-gray-200 dark:border-gray-700 p-6 md:p-8 bg-gray-50 dark:bg-slate-900/50">
+        <h2 class="text-xl font-bold mb-4">Portfolio</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {% for item in portfolio %}
+            <div class="bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700">
+                <img src="{{ item.image.url }}" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="font-semibold text-sm truncate">{{ item.title }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% for f in freelancers %}
+<div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm card-hover border border-gray-100 dark:border-gray-700 flex flex-col">
+    <div class="flex items-start gap-4 mb-4">
+        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 shrink-0">
+            {% if f.profile_image %}
+                <img src="{{ f.profile_image.url }}" class="w-full h-full object-cover" alt="{{ f.full_name }}">
+            {% else %}
+                <div class="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-500">{{ f.full_name|slice:":1" }}</div>
+            {% endif %}
+        </div>
+        <div class="flex-1 min-w-0">
+            <h3 class="font-semibold truncate">{{ f.full_name }}</h3>
+            <p class="text-sm text-gray-500">{{ f.school }}</p>
+            {% if f.verified %}<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mt-1">✓ Verified</span>{% endif %}
+        </div>
+    </div>
+    <div class="flex gap-2 flex-wrap mb-4">
+        {% for skill in f.profile.skills.all|slice:":3" %}
+            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs">{{ skill.name }}</span>
+        {% endfor %}
+    </div>
+    <div class="mt-auto flex gap-3">
+        <a href="{% url 'freelancer_detail' f.pk %}" class="flex-1 text-center py-2 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Profile</a>
+        {% if f.whatsapp %}
+        <a href="https://wa.me/{{ f.whatsapp|replace:'+':'' }}" target="_blank" class="flex-1 text-center py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">WhatsApp</a>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<div class="col-span-full text-center py-10 text-gray-500">No students found matching your criteria.</div>
+{% endfor %}

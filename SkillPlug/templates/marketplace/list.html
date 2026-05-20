@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Marketplace{% endblock %}
+{% block content %}
+<div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <h1 class="text-3xl font-bold">Find a Student Freelancer</h1>
+    <div class="flex gap-2 w-full md:w-auto">
+        <input type="text" hx-get="{% url 'marketplace_list' %}" hx-target="#results" hx-trigger="input changed delay:500ms, search" name="q" placeholder="Search skills or names..." class="w-full md:w-64 px-4 py-2 border rounded-lg bg-white dark:bg-slate-800">
+    </div>
+</div>
+
+<form hx-get="{% url 'marketplace_list' %}" hx-target="#results" class="mb-6 p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <select name="school" class="p-2 border rounded bg-white dark:bg-slate-900">
+        <option value="all">All Schools</option>
+        {% for code, name in freelancers.model.SCHOOL_CHOICES %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
+    </select>
+    <select name="skill" class="p-2 border rounded bg-white dark:bg-slate-900">
+        <option value="all">All Skills</option>
+        {% for skill in skills %}<option value="{{ skill.id }}">{{ skill.name }}</option>{% endfor %}
+    </select>
+    <select name="availability" class="p-2 border rounded bg-white dark:bg-slate-900">
+        <option value="all">Availability</option>
+        {% for code, label in freelancers.model.AVAILABILITY_CHOICES %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
+    </select>
+</form>
+
+<div id="results">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% include 'partials/freelancer_card_list.html' %}
+    </div>
+</div>
+
+<div class="mt-8 flex justify-center">
+    {% if page_obj.has_next %}
+        <button hx-get="?page={{ page_obj.next_page_number }}" hx-target="#results" hx-swap="innerHTML" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600">Load More</button>
+    {% endif %}
+</div>
+{% endblock %}

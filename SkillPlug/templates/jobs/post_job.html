@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Post Job{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+    <h1 class="text-2xl font-bold mb-6">Post a New Job</h1>
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium mb-1">Title</label>{{ form.title }}</div>
+            <div><label class="block text-sm font-medium mb-1">Budget (₦)</label>{{ form.budget }}</div>
+        </div>
+        <div><label class="block text-sm font-medium mb-1">Description</label>{{ form.description }}</div>
+        <button type="submit" class="w-full py-2.5 bg-ng-600 text-white rounded-lg font-semibold hover:bg-ng-700">Publish Job</button>
+    </form>
+</div>
+{% endblock %}

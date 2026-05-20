@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SkillPlug{% endblock %} | Student Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ng: { 500: '#008753', 600: '#006B41', 700: '#005232' },
+                        surface: { light: '#F9FAFB', dark: '#0F172A' }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .card-hover { transition: all 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-surface-light dark:bg-surface-dark text-gray-800 dark:text-gray-100 min-h-screen flex flex-col">
+    {% include 'partials/navbar.html' %}
+
+    <main class="flex-grow pt-16 md:pt-20 pb-16 md:pb-0 px-4 max-w-7xl mx-auto w-full">
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="mb-4 p-4 rounded-lg text-sm {% if msg.tags == 'success' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100{% else %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100{% endif %}">
+                {{ msg }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/mobile_nav.html' %}
+    {% include 'partials/footer.html' %}
+
+    <script>
+        const toggleDark = () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        };
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

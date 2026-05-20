@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="py-10 md:py-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+        Connect. Learn. Earn. <span class="text-ng-600">Nigeria's Student</span> Marketplace.
+    </h1>
+    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">Find affordable student freelancers for your projects, or monetize your digital skills on campus.</p>
+    <div class="flex gap-4 justify-center">
+        <a href="{% url 'marketplace_list' %}" class="px-6 py-3 bg-ng-600 text-white rounded-xl font-semibold hover:bg-ng-700 transition">Browse Talents</a>
+        <a href="{% url 'job_create' %}" class="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition">Post a Job</a>
+    </div>
+</section>
+
+{% if featured_freelancers %}
+<div class="mb-10">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">Top Available Students</h2>
+        <a href="{% url 'marketplace_list' %}" class="text-ng-600 hover:underline">View All</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% include 'partials/freelancer_card_list.html' with freelancers=featured_freelancers %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
