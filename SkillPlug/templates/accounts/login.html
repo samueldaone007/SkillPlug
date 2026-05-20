@@ -6,6 +6,7 @@
     <form method="POST" class="space-y-4">
         {% csrf_token %}
         {{ form.login }}
+        {{form.username}}
         {{ form.password }}
         {{ form.remember }}
         <button type="submit" class="w-full py-2.5 bg-ng-600 text-white rounded-lg font-semibold hover:bg-ng-700">Login</button>
