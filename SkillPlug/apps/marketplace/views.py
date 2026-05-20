@@ -44,12 +44,3 @@ class FreelancerDetailView(DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['portfolio'] = self.object.portfolio_items.all()[:4]
         return ctx
-
-# apps/marketplace/urls.py
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.MarketplaceView.as_view(), name='marketplace_list'),
-    path('<int:pk>/', views.FreelancerDetailView.as_view(), name='freelancer_detail'),
-]
