@@ -13,7 +13,7 @@ class JobListView(ListView):
 
 class JobDetailView(DetailView):
     model = Job
-    template_name = 'jobs/detail.html'
+    template_name = 'jobs/details.html'
     context_object_name = 'job'
 
     def get_context_data(self, **kwargs):

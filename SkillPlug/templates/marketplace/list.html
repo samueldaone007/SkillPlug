@@ -11,7 +11,7 @@
 <form hx-get="{% url 'marketplace_list' %}" hx-target="#results" class="mb-6 p-4 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-4">
     <select name="school" class="p-2 border rounded bg-white dark:bg-slate-900">
         <option value="all">All Schools</option>
-        {% for code, name in freelancers.model.SCHOOL_CHOICES %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
+        {% for code, name in school_choices %}<option value="{{ code }}">{{ name }}</option>{% endfor %}
     </select>
     <select name="skill" class="p-2 border rounded bg-white dark:bg-slate-900">
         <option value="all">All Skills</option>
@@ -19,7 +19,7 @@
     </select>
     <select name="availability" class="p-2 border rounded bg-white dark:bg-slate-900">
         <option value="all">Availability</option>
-        {% for code, label in freelancers.model.AVAILABILITY_CHOICES %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
+        {% for code, label in availability_choices %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
     </select>
 </form>
 

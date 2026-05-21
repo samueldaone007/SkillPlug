@@ -1,16 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Post Job{% endblock %}
+{% block title %}Post a Job{% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
-<div class="max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
-    <h1 class="text-2xl font-bold mb-6">Post a New Job</h1>
-    <form method="POST" class="space-y-4">
-        {% csrf_token %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><label class="block text-sm font-medium mb-1">Title</label>{{ form.title }}</div>
-            <div><label class="block text-sm font-medium mb-1">Budget (₦)</label>{{ form.budget }}</div>
+<div class="max-w-2xl mx-auto mt-8">
+    <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <div class="mb-6 text-center">
+            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Post a New Job</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">Fill in the details below to find the perfect student freelancer.</p>
         </div>
-        <div><label class="block text-sm font-medium mb-1">Description</label>{{ form.description }}</div>
-        <button type="submit" class="w-full py-2.5 bg-ng-600 text-white rounded-lg font-semibold hover:bg-ng-700">Publish Job</button>
-    </form>
+        
+        <form method="POST" class="space-y-5">
+            {% csrf_token %}
+            <!-- Using crispy forms filter for better styling since widgets aren't defined on the model form -->
+            {{ form|crispy }}
+            
+            <div class="pt-4">
+                <button type="submit" class="w-full py-3 bg-ng-600 text-white rounded-xl font-semibold hover:bg-ng-700 transition shadow-lg shadow-green-600/20">
+                    Publish Job
+                </button>
+                <p class="text-xs text-center text-gray-400 mt-4">By posting, you agree to our Terms of Service.</p>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

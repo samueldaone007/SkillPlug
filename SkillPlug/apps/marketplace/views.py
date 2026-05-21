@@ -1,16 +1,23 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from apps.accounts.models import CustomUser, Skill, Profile
 from apps.marketplace.models import PortfolioItem
+
 
 class HomeView(ListView):
     model = CustomUser
     template_name = 'index.html'
     context_object_name = 'featured_freelancers'
-    paginate_by = 6
 
     def get_queryset(self):
-        return CustomUser.objects.filter(availability_status='available', verified=True).select_related('profile').prefetch_related('profile__skills')[:6]
+        # Removed verified=True so homepage shows all available students
+        return (
+            CustomUser.objects
+            .filter(availability_status='available')
+            .select_related('profile')
+            .prefetch_related('profile__skills')[:6]
+        )
+
 
 class MarketplaceView(ListView):
     model = CustomUser
@@ -19,10 +26,11 @@ class MarketplaceView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        qs = CustomUser.objects.filter(verified=True).select_related('profile').prefetch_related('profile__skills')
-        q = self.request.GET.get('q', '')
-        school = self.request.GET.get('school', '')
-        skill = self.request.GET.get('skill', '')
+        # Removed verified=True so all students show up
+        qs = CustomUser.objects.select_related('profile').prefetch_related('profile__skills')
+        q            = self.request.GET.get('q', '')
+        school       = self.request.GET.get('school', '')
+        skill        = self.request.GET.get('skill', '')
         availability = self.request.GET.get('availability', '')
 
         if q:
@@ -35,6 +43,15 @@ class MarketplaceView(ListView):
             qs = qs.filter(availability_status=availability)
         return qs.distinct()
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        # Pass skills and choices so the filter dropdowns work
+        ctx['skills'] = Skill.objects.all().order_by('name')
+        ctx['school_choices'] = CustomUser.SCHOOL_CHOICES
+        ctx['availability_choices'] = CustomUser.AVAILABILITY_CHOICES
+        return ctx
+
+
 class FreelancerDetailView(DetailView):
     model = CustomUser
     template_name = 'marketplace/detail.html'
@@ -42,5 +59,5 @@ class FreelancerDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['portfolio'] = self.object.portfolio_items.all()[:4]
+        ctx['portfolio'] = self.object.portfolio_items.all()
         return ctx
