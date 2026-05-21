@@ -23,7 +23,7 @@
 
                 <div class="flex gap-4">
                     {% if freelancer.whatsapp %}
-                        <a href="https://wa.me/{{ freelancer.whatsapp|replace:'+':'' }}" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition">
+                        <a href="{{ freelancer.profile.whatsapp_link|default:'#' }}" target="_blank" class="flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.13.67 4.1 1.8 5.7L2 22l4.5-1.7c1.53.95 3.35 1.5 5.3 1.5 5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.73 0-3.35-.5-4.73-1.36l-.34-.21-3 .71.8-2.93-.23-.37C3.72 14.27 3 13.21 3 12c0-4.96 4.04-9 9-9s9 4.04 9 9-4.04 9-9 9z"/></svg>
                             Contact on WhatsApp
                         </a>
@@ -49,15 +49,5 @@
         </div>
     </div>
     {% endif %}
-    <div class="flex flex-wrap gap-2 mb-6">
-    {% for s in freelancer.profile.skills.all %}
-        <span class="px-4 py-1.5 bg-green-50 text-ng-700 dark:bg-green-900/30 dark:text-emerald-300 border border-green-200 dark:border-green-800 rounded-full text-sm font-medium flex items-center gap-2">
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-            {{ s.name }}
-        </span>
-    {% empty %}
-        <span class="text-gray-400 italic text-sm">No skills added yet.</span>
-    {% endfor %}
-    </div>
 </div>
 {% endblock %}

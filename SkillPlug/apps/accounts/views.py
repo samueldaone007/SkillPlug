@@ -19,7 +19,8 @@ class SignupView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-        Profile.objects.get_or_create(user=user)
+        profile, _ = Profile.objects.get_or_create(user=user)
+        profile.skills.set(form.cleaned_data.get('skills', []))
         return super().form_valid(form)
 
 

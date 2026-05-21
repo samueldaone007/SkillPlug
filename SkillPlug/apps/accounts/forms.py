@@ -2,6 +2,14 @@ from django import forms
 from apps.accounts.models import CustomUser, Skill
 
 class UserSignupForm(forms.ModelForm):
+    skills = forms.ModelMultipleChoiceField(
+        queryset=Skill.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label='Your Skills',
+        help_text='Select all that apply'
+    )
+
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Create a password',
